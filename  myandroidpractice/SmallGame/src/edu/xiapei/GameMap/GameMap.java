@@ -8,7 +8,11 @@ import java.nio.ByteBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import storageTools.MapDao;
+import storageTools.MapDto;
+
 import edu.xiapei.Statics;
+import gameTools.GameTools;
 
 public class GameMap {
 	private int[][] mapType;
@@ -26,10 +30,7 @@ public class GameMap {
     			
     		}
     	}
-    	
-    	
-    	
-    	
+     	
     	for(int i = 0;i<Statics.MAPHIGHT;i++){
     		for(int j = 0;j<Statics.MAPWIDTH;j++){
     			switch(mapType[i][j]){
@@ -52,28 +53,39 @@ public class GameMap {
     	}
     	
     }
-    private GameMap(String filename) throws IOException{
-    	mapType = new int[Statics.MAPHIGHT][Statics.MAPWIDTH];
-    	hight= new int[Statics.MAPHIGHT][Statics.MAPWIDTH];
+    private GameMap(MapDao md,int index){
+    	MapDto mdto = md.find(index);
+    	mapType = GameTools.stringToArray(mdto.mapType);
+    	hight= GameTools.stringToArray(mdto.mapHeight);
     	elements = new MapElements[Statics.MAPHIGHT][Statics.MAPWIDTH];
-    	 FileInputStream fis = new FileInputStream("maps/defaultmap");
-		 
-		 for(int i = 0;i<Statics.MAPHIGHT;i++){
-			 for(int j=0;j<Statics.MAPWIDTH;i++){
-				 mapType[i][j] = fis.read();
-				 hight[i][j] = fis.read();
-			 }
-		 }
-		 
-		 byte temp;
-		 do{
-			 temp=(byte) fis.read();
-			 
-		 }
-		 while(temp!=-1);
-		 String s;
-		// fis.write(s.getBytes());
-		 fis.close();
+    	for(int i = 0;i<Statics.MAPHIGHT;i++){
+    		for(int j = 0;j<Statics.MAPWIDTH;j++){
+    			mapType[i][j] = Statics.testMap[i][j];
+    			hight[i][j] = Statics.testHightMap[i][j];
+    			
+    		}
+    	}
+     	
+    	for(int i = 0;i<Statics.MAPHIGHT;i++){
+    		for(int j = 0;j<Statics.MAPWIDTH;j++){
+    			switch(mapType[i][j]){
+    			case 0:elements[i][j] = new Hole(hight[i][j]);break;
+    			case 1:elements[i][j] = new Cube(hight[i][j]);break;
+    			case 2:elements[i][j] = new SlopNorth(hight[i][j]);break;
+    			case 3:elements[i][j] = new SlopSouth(hight[i][j]);break;
+    			case 4:elements[i][j] = new SlopWest(hight[i][j]);break;
+    			case 5:elements[i][j] = new SlopEast(hight[i][j]);break;
+    			case 6:elements[i][j] = new Accnorth(hight[i][j]);break;
+    			case 7:elements[i][j] = new Accsouth(hight[i][j]);break;
+    			case 8:elements[i][j] = new Accwest(hight[i][j]);break;
+    			case 9:elements[i][j] = new Acceast(hight[i][j]);break;
+    			case 10:elements[i][j] = new Accup(hight[i][j]);break;
+    			case 11:elements[i][j] = new Target(hight[i][j]);break;
+    			case 12:elements[i][j] = new Startpoint(hight[i][j]);break;
+    			default:elements[i][j] = new Cube(hight[i][j]);
+    			}
+    		}
+    	}
 	}
     public void deleteMap(){
     	gm=null;
@@ -84,17 +96,11 @@ public class GameMap {
     	}
     	return gm;
     }
-    public static GameMap getGameMap(String filename){
+    public static GameMap getGameMap(MapDao md,int index){
     	if(gm==null){
-    		try {
-				gm = new GameMap(filename);
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
+				gm = new GameMap(md,index);
+			
     	}
     	return gm;
     }

@@ -3,6 +3,8 @@ package edu.xiapei;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import storageTools.MapDao;
+
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
 import edu.xiapei.GameMap.GameMap;
@@ -13,9 +15,9 @@ public class MapViewRenderer implements GLSurfaceView.Renderer {
 	 
 	    private GameMap gameMap;
 	   
-   public MapViewRenderer(String string) {
+   public MapViewRenderer(MapDao md,int index) {
    	
-	   gameMap = GameMap.getGameMap();
+	   gameMap = GameMap.getGameMap(md,index);
 	 
    }
 

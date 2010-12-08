@@ -2,11 +2,17 @@ package edu.xiapei;
 
 
 
+import gameTools.GameTools;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+
+import storageTools.MapDao;
+import storageTools.MapDto;
+import storageTools.StorageTools;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,26 +25,21 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class GameMenu extends Activity{
+	private MapDao md;
 	
 	private Button start,edit,exit,pre,next;
 	private GLSurfaceView menuView;
-	private String[] filenames={"defaltmap"};
-	private int mapnumber = 0;
+	//private String[] filenames={"defaltmap"};
+	private int mapindex = 1;
+	private int mapCount = 1;
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	  //  try {
-		getMapNames();
-		//} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-	//		e.printStackTrace();
-		//} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		//}
+	    md = new MapDao(this);
+		checkDatabase();
 	    setContentView(R.layout.menu);
 	    menuView =
             (GLSurfaceView) findViewById(R.id.menuview);
-	    menuView.setRenderer(new MapViewRenderer("defaltmap"));
+	    menuView.setRenderer(new MapViewRenderer(md,1));
 	    start = (Button) findViewById(R.id.start);
 	    edit = (Button) findViewById(R.id.edit);
 	    exit = (Button) findViewById(R.id.exit);
@@ -52,31 +53,24 @@ public class GameMenu extends Activity{
 	}
 	 private void updateButtonState() {
 		// TODO Auto-generated method stub
-		   pre.setClickable(mapnumber>0);
-		   next.setClickable(mapnumber<filenames.length-1);
+		   pre.setClickable(mapindex>0);
+		   next.setClickable(mapindex<mapCount-1);
 	}
-	private void getMapNames() {
-		// TODO Auto-generated method stub
-		 //File dir = getDir("maps",Context.MODE_WORLD_READABLE|Context.MODE_WORLD_WRITEABLE);
-		 //filenames = dir.list();
-		 //if(filenames.length==0){
-			 
-			/* FileOutputStream fos = openFileOutput(dir.getName()+"/defaultmap", 0);
-			 
-			 for(int i = 0;i<Statics.MAPHIGHT;i++){
-				 for(int j=0;j<Statics.MAPWIDTH;i++){
-					 fos.write(Statics.testMap[i][j]);
-					 fos.write(Statics.testHightMap[i][j]);
-				 }
-			 }
-			 
-			 fos.write(s.getBytes());
-			 fos.close();*/
-			 String s = "Xia Pei$Xia Pei&99";
-			 filenames = new String[1];
-			 filenames[0] = "defaultmap";
-		 //}
-
+	private void checkDatabase() {
+		int mapNum = md.getMapNumber();
+		if(mapNum==0){
+			MapDto mdto = new MapDto();
+			mdto.mapType = GameTools.arrayToString(Statics.testMap);
+			mdto.mapHeight = GameTools.arrayToString(Statics.testHightMap);
+			mdto.author = "XiaPei";
+			mdto.hightScore=99000;
+			mdto.hsPlayer="XiaPei";
+			mdto.name="defaltmap";
+			md.insert(mdto);
+			mapNum = 1;
+		}
+		mapCount = mapNum;
+		
 	}
 	protected void onResume() {
 	        // Ideally a game should implement onResume() and onPause()
@@ -98,7 +92,7 @@ public class GameMenu extends Activity{
 			// TODO Auto-generated method stub
 			
 			Intent intent = new Intent(GameMenu.this, SmallGame.class);
-			intent.putExtra("filename", "default");
+			intent.putExtra("mapindex",mapindex );
 			startActivity(intent);
 			
 			//onStop();
