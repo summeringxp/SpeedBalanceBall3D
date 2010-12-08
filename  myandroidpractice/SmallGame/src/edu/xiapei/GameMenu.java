@@ -23,23 +23,29 @@ import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class GameMenu extends Activity{
 	private MapDao md;
 	
 	private Button start,edit,exit,pre,next;
 	private GLSurfaceView menuView;
+	private TextView mapinfo,hsinfo;
 	//private String[] filenames={"defaltmap"};
 	private int mapindex = 1;
 	private int mapCount = 1;
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    md = new MapDao(this);
+	    
 		checkDatabase();
+		MapDto mdto = md.find(mapindex);
 	    setContentView(R.layout.menu);
 	    menuView =
             (GLSurfaceView) findViewById(R.id.menuview);
-	    menuView.setRenderer(new MapViewRenderer(md,1));
+	    menuView.setRenderer(new MapViewRenderer(mdto));
+	    mapinfo = (TextView)findViewById(R.id.mapinfo);
+	    hsinfo = (TextView)findViewById(R.id.hsinfo);
 	    start = (Button) findViewById(R.id.start);
 	    edit = (Button) findViewById(R.id.edit);
 	    exit = (Button) findViewById(R.id.exit);
@@ -49,6 +55,8 @@ public class GameMenu extends Activity{
 	    start.setOnClickListener(mStartListener);
 	    exit.setOnClickListener(mExitListener);
 	    
+	    hsinfo.setText("BestRecord: "+mdto.hightScore/1000.0+"s. by "+mdto.hsPlayer);
+	    mapinfo.setText(mdto.name +" "+mdto.author);
 	    
 	}
 	 private void updateButtonState() {

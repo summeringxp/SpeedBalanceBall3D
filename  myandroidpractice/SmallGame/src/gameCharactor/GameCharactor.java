@@ -29,6 +29,7 @@ public class GameCharactor {
 	private float resistanceFactor=1.02f;
 	private float jumpFactor=0.3f;
 	private Drawable drawer;
+	private long birthtime;
 	public GameCharactor(){
 		
 		reset();
@@ -139,8 +140,9 @@ public class GameCharactor {
 		// TODO Auto-generated method stub
 		reset();
 	}
-	private void reset() {
+	public void reset() {
 		// TODO Auto-generated method stub
+		birthtime = SystemClock.currentThreadTimeMillis();
 		size = 0.4f;
 		posMatrix[12] = 1.5f;
 		posMatrix[13] = 1.5f;
@@ -201,15 +203,13 @@ public class GameCharactor {
 			return GameMap.getGameMap().getMapType(x, y);
 		}
 	}
-	private boolean outsideMap(int x,int y,int z) {
-		// TODO Auto-generated method stub
-		return x<0||x>8||y<0||y>8||z<0;
-	}
 	private boolean outsideMap(float x,float y,float z) {
 		// TODO Auto-generated method stub
 		return x<0||x>8||y<0||y>8||z<0;
 	}
-	
+	public long getLife(){
+		return SystemClock.currentThreadTimeMillis()-birthtime;
+	}
 	
 	
 }

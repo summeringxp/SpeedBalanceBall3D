@@ -4,6 +4,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import storageTools.MapDao;
+import storageTools.MapDto;
 
 import android.opengl.GLSurfaceView;
 import android.opengl.GLU;
@@ -15,9 +16,9 @@ public class MapViewRenderer implements GLSurfaceView.Renderer {
 	 
 	    private GameMap gameMap;
 	   
-   public MapViewRenderer(MapDao md,int index) {
+   public MapViewRenderer(MapDto mdto) {
    	
-	   gameMap = GameMap.getGameMap(md,index);
+	   gameMap = GameMap.getGameMap(mdto);
 	 
    }
 

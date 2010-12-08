@@ -3,6 +3,8 @@ package edu.xiapei;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import storageTools.MapDto;
+
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
@@ -15,9 +17,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	 
 	    private GameManager gameManager;
 
-   public GameRenderer() {
+   public GameRenderer(MapDto mdto) {
    	
-   	gameManager = new GameManager();
+   	gameManager = new GameManager(mdto);
    	
    	gameManager.getGameCharMngr().createChar(new GameCharactor());
    
@@ -40,7 +42,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
        gl.glEnableClientState(GL10.GL_COLOR_ARRAY);         
        gameManager.go(gl);
        if(gameManager.getGameState()==1){
-			mHandler.sendEmptyMessage(0);
+			mHandler.sendEmptyMessage((int)gameManager.getPlayTime());
 			gameManager.setState(3);
 		}
        
@@ -69,7 +71,12 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 		// TODO Auto-generated method stub
 		
 	}
-   public float mTransX;
+   
+   public GameManager getGameManager() {
+	return gameManager;
+}
+
+public float mTransX;
    public float mTransY;
    public float fTransX;
    public float fTransY;

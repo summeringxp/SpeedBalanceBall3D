@@ -13,9 +13,7 @@ public class GameSurfaceView extends GLSurfaceView /*implements SensorEventListe
 
     public GameSurfaceView(Context context, AttributeSet attrs) {
         super(context,attrs);
-    	mRenderer = new GameRenderer();
-        setRenderer(mRenderer);
-        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+    	
         mContext = context;
         mAttrs = attrs;
        
@@ -66,6 +64,15 @@ public class GameSurfaceView extends GLSurfaceView /*implements SensorEventListe
 	}
  
     public GameRenderer getRenderer() {
+		return mRenderer;
+	}
+    public void setGameRenderer(GameRenderer gr){
+    	this.mRenderer = gr;
+    	setRenderer(mRenderer);
+        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+    }
+    
+	public GameRenderer getMRenderer() {
 		return mRenderer;
 	}
 

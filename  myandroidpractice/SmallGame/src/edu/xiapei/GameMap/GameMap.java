@@ -19,7 +19,7 @@ public class GameMap {
     private int[][] hight;
     private MapElements[][] elements;
     private static GameMap gm;
-    private GameMap(){
+/*    private GameMap(){
     	mapType = new int[Statics.MAPHIGHT][Statics.MAPWIDTH];
     	hight= new int[Statics.MAPHIGHT][Statics.MAPWIDTH];
     	elements = new MapElements[Statics.MAPHIGHT][Statics.MAPWIDTH];
@@ -52,19 +52,12 @@ public class GameMap {
     		}
     	}
     	
-    }
-    private GameMap(MapDao md,int index){
-    	MapDto mdto = md.find(index);
+    }*/
+    private GameMap(MapDto mdto){
+    	
     	mapType = GameTools.stringToArray(mdto.mapType);
     	hight= GameTools.stringToArray(mdto.mapHeight);
     	elements = new MapElements[Statics.MAPHIGHT][Statics.MAPWIDTH];
-    	for(int i = 0;i<Statics.MAPHIGHT;i++){
-    		for(int j = 0;j<Statics.MAPWIDTH;j++){
-    			mapType[i][j] = Statics.testMap[i][j];
-    			hight[i][j] = Statics.testHightMap[i][j];
-    			
-    		}
-    	}
      	
     	for(int i = 0;i<Statics.MAPHIGHT;i++){
     		for(int j = 0;j<Statics.MAPWIDTH;j++){
@@ -91,15 +84,15 @@ public class GameMap {
     	gm=null;
     }
     public static GameMap getGameMap(){
-    	if(gm==null){
+    	/*if(gm==null){
     		gm = new GameMap();
-    	}
+    	}*/
     	return gm;
     }
-    public static GameMap getGameMap(MapDao md,int index){
+    public static GameMap getGameMap(MapDto mdto){
     	if(gm==null){
 
-				gm = new GameMap(md,index);
+				gm = new GameMap(mdto);
 			
     	}
     	return gm;

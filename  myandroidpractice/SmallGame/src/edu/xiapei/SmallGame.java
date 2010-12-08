@@ -19,6 +19,9 @@ package edu.xiapei;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import storageTools.MapDao;
+import storageTools.MapDto;
+
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -41,7 +44,10 @@ import android.widget.TextView;
 public class SmallGame extends Activity {
 	private GameSurfaceView mGLSurfaceView;
 	private Chronometer chronometer;
-	private GameManager gameManager;
+	
+	private MapDao md;
+	private int mapindex=-1;
+	private int time;
 	public View hidenview;
     public View getHidenview() {
 		return hidenview;
@@ -50,21 +56,29 @@ public class SmallGame extends Activity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
     	 super.onCreate(savedInstanceState);
+    	 Bundle extras = getIntent().getExtras(); 
+    	 if(extras !=null)
+    	 {
+    		 mapindex= extras.getInt("mapindex");
+    	 }
+
          setContentView(R.layout.main);
-        // hidenview = (View)findViewById(R.id.hidecontainer);
-         
+                
          chronometer = (Chronometer)findViewById(R.id.chronometer);
          chronometer.setFormat("%s");
          chronometer.start();
          mGLSurfaceView = (GameSurfaceView) findViewById(R.id.glsurfaceview);
-         //gameManager = new GameManager(this);
+         md = new MapDao(this);
+         
+         GameRenderer mRenderer = new GameRenderer(md.find(mapindex));
+         mGLSurfaceView.setGameRenderer(mRenderer);
          
          final Handler mHandler = new Handler(){
         	 public void handleMessage(Message msg) {
         		 
         		 chronometer.stop();
         		 mGLSurfaceView.setVisibility(View.INVISIBLE);
-        		 
+        		 time = msg.what;
         		 showDialog();
         		 }
 
@@ -74,7 +88,7 @@ public class SmallGame extends Activity {
          
          mGLSurfaceView.requestFocus();
          mGLSurfaceView.setFocusableInTouchMode(true);  
-         mGLSurfaceView.getRenderer().setHandler(mHandler);
+         mRenderer.setHandler(mHandler);
          
         
         
@@ -102,27 +116,51 @@ public class SmallGame extends Activity {
    
     private void showDialog() {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);  
-    	  
-    	alert.setTitle("New Record!!!");  
-    	alert.setMessage("Your name:");  
-    	  
-    	// Set an EditText view to get user input   
-    	final EditText input = new EditText(this);  
-    	alert.setView(input);  
-    	  
-    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
-    	public void onClick(DialogInterface dialog, int whichButton) {  
-    	  String value = input.getText().toString();  
-    	  // Do something with value!  
-    	  }  
-    	});  
-    	  
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {  
-    	  public void onClick(DialogInterface dialog, int whichButton) {  
-    	    // Canceled.  
-    	  }  
-    	});  
-    	  
+    	MapDto mdto= md.find(mapindex);
+    	if(mdto.hightScore>time){
+	    	alert.setTitle("New Record!!! "+time/1000.0+"s");  
+	    	alert.setMessage("Your name:");  
+	    	  
+	    	// Set an EditText view to get user input   
+	    	final EditText input = new EditText(this);  
+	    	alert.setView(input);  
+	    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {  
+	    	public void onClick(DialogInterface dialog, int whichButton) {  
+	    	  String value = input.getText().toString();  
+	    	  MapDto mdto= md.find(mapindex);
+	    	  mdto.hightScore = time;
+	    	  mdto.hsPlayer = value;
+	    	  md.update(mdto);
+	    	  
+	    	  mGLSurfaceView.getMRenderer().getGameManager().reset();
+	    	  chronometer.setBase(SystemClock.elapsedRealtime());
+	    	  chronometer.start();
+	    	  // Do something with value!  
+	    	  }  
+	    	});  
+	    	  
+	    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {  
+	    	  public void onClick(DialogInterface dialog, int whichButton) {  
+	    	    // Canceled.  
+	    		  mGLSurfaceView.getMRenderer().getGameManager().reset();
+	        	  chronometer.setBase(SystemClock.elapsedRealtime());
+	        	  chronometer.start();
+	    	  }  
+	    	});  
+    	}else{
+    		alert.setTitle("You Win!!! "+time/1000.0+"s");  
+	    	alert.setMessage("Try again to break "+mdto.hsPlayer+"'s record! ("+mdto.hightScore/1000.0+"s)");  
+	    		    	  
+	    	alert.setNegativeButton("Retry", new DialogInterface.OnClickListener() {  
+	    	  public void onClick(DialogInterface dialog, int whichButton) {  
+	    	    // Canceled.  
+	    		  mGLSurfaceView.getMRenderer().getGameManager().reset();
+	        	  chronometer.setBase(SystemClock.elapsedRealtime());
+	        	  chronometer.start();
+	        	  
+	    	  }  
+	    	}); 
+    	}
     	alert.show();  
     }
 
