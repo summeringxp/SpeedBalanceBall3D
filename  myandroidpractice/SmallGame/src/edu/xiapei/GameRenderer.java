@@ -21,7 +21,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
    	
    	gameManager = new GameManager(mdto);
    	
-   	gameManager.getGameCharMngr().createChar(new GameCharactor());
+   	gameManager.getGameCharMngr().createChar(new GameCharactor(mdto));
    
    	
    }

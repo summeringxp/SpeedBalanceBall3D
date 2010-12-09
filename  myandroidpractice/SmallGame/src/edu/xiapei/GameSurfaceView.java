@@ -4,21 +4,22 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.opengl.GLSurfaceView;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-public class GameSurfaceView extends GLSurfaceView /*implements SensorEventListener*/{
+public class GameSurfaceView extends GLSurfaceView implements SensorEventListener{
 
     public GameSurfaceView(Context context, AttributeSet attrs) {
         super(context,attrs);
-    	
-        mContext = context;
-        mAttrs = attrs;
-       
+        mSensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
+        mSensorManager.registerListener(this,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_FASTEST);
     }
-   /* @Override
+   @Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		// TODO Auto-generated method stub
 		return ;
@@ -26,18 +27,27 @@ public class GameSurfaceView extends GLSurfaceView /*implements SensorEventListe
 
 	@Override
 	public void onSensorChanged(SensorEvent e) {
-		// TODO Auto-generated method stub
+		
+        
+            if (e.sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
+            	 float x = -(float) (e.values[0]/20.0);
+            	 float y = (float) (e.values[1]/20.0);
+            	 float z = (float) (e.values[2]/20.0);
+            	 mRenderer.fTransX = x * Statics.TRACKBALL_SCALE_FACTOR;
+                 mRenderer.fTransY = y * Statics.TRACKBALL_SCALE_FACTOR;
+            }         
+        
 		return ;
-	}*/
+	}
     
    
 
-    @Override public boolean onTrackballEvent(MotionEvent e) {
+  /*  @Override public boolean onTrackballEvent(MotionEvent e) {
         mRenderer.fTransX = e.getX() * Statics.TRACKBALL_SCALE_FACTOR;
         mRenderer.fTransY = e.getY() * Statics.TRACKBALL_SCALE_FACTOR;
        // requestRender();
         return true;
-    }
+    }*/
     
 
     @Override public boolean onTouchEvent(MotionEvent e) {
@@ -75,14 +85,13 @@ public class GameSurfaceView extends GLSurfaceView /*implements SensorEventListe
 	public GameRenderer getMRenderer() {
 		return mRenderer;
 	}
-
+	 
 	private GameRenderer mRenderer;
     private Context mContext;
     private AttributeSet mAttrs;
     private float mPreviousX;
     private float mPreviousY;
-    private Handler mHandler;
-	
+    SensorManager mSensorManager;
 	
     
 }

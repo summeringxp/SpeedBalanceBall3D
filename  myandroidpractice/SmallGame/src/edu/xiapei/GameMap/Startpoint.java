@@ -13,7 +13,7 @@ public class Startpoint extends MapElements {
 	public float getHight(float x, float y) {
 		// TODO Auto-generated method stub
 		
-		return 0.5f;
+		return (1.0f+hight)/2.0f;
 	}
 
 	@Override

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import storageTools.MapDto;
+
 import edu.xiapei.Statics;
 
 

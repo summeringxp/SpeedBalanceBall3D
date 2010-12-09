@@ -21,6 +21,9 @@ public class MapViewRenderer implements GLSurfaceView.Renderer {
 	   gameMap = GameMap.getGameMap(mdto);
 	 
    }
+   public void changeMap(MapDto mdto){
+	   gameMap = GameMap.getGameMap(mdto);
+   }
 
    public void onDrawFrame(GL10 gl) {
        gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);

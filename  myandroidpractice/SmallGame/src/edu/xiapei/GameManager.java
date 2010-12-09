@@ -82,7 +82,6 @@ public class GameManager {
         drawGameInfo();
 	}
 	private void drawGameInfo() {
-		// TODO Auto-generated method stub
 		
 	}
 	public int getGameState(){

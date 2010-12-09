@@ -28,6 +28,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,6 +57,7 @@ public class SmallGame extends Activity {
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
     	 super.onCreate(savedInstanceState);
+    	 this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     	 Bundle extras = getIntent().getExtras(); 
     	 if(extras !=null)
     	 {
@@ -64,9 +66,6 @@ public class SmallGame extends Activity {
 
          setContentView(R.layout.main);
                 
-         chronometer = (Chronometer)findViewById(R.id.chronometer);
-         chronometer.setFormat("%s");
-         chronometer.start();
          mGLSurfaceView = (GameSurfaceView) findViewById(R.id.glsurfaceview);
          md = new MapDao(this);
          
@@ -76,7 +75,6 @@ public class SmallGame extends Activity {
          final Handler mHandler = new Handler(){
         	 public void handleMessage(Message msg) {
         		 
-        		 chronometer.stop();
         		 mGLSurfaceView.setVisibility(View.INVISIBLE);
         		 time = msg.what;
         		 showDialog();
@@ -89,9 +87,7 @@ public class SmallGame extends Activity {
          mGLSurfaceView.requestFocus();
          mGLSurfaceView.setFocusableInTouchMode(true);  
          mRenderer.setHandler(mHandler);
-         
-        
-        
+                 
     }
 	
 	
@@ -110,6 +106,11 @@ public class SmallGame extends Activity {
         // to take appropriate action when the activity looses focus
         super.onPause();
         mGLSurfaceView.onPause();
+    }
+    @Override
+    protected void onStop() {
+    	mGLSurfaceView.mSensorManager.unregisterListener(mGLSurfaceView);
+        super.onStop();
     }
 
 	
@@ -133,9 +134,7 @@ public class SmallGame extends Activity {
 	    	  md.update(mdto);
 	    	  
 	    	  mGLSurfaceView.getMRenderer().getGameManager().reset();
-	    	  chronometer.setBase(SystemClock.elapsedRealtime());
-	    	  chronometer.start();
-	    	  // Do something with value!  
+	    	  mGLSurfaceView.setVisibility(View.VISIBLE);
 	    	  }  
 	    	});  
 	    	  
@@ -143,21 +142,19 @@ public class SmallGame extends Activity {
 	    	  public void onClick(DialogInterface dialog, int whichButton) {  
 	    	    // Canceled.  
 	    		  mGLSurfaceView.getMRenderer().getGameManager().reset();
-	        	  chronometer.setBase(SystemClock.elapsedRealtime());
-	        	  chronometer.start();
+	        
+	        	  mGLSurfaceView.setVisibility(View.VISIBLE);
 	    	  }  
 	    	});  
     	}else{
-    		alert.setTitle("You Win!!! "+time/1000.0+"s");  
+    		alert.setTitle("You Win! "+time/1000.0+"s");  
 	    	alert.setMessage("Try again to break "+mdto.hsPlayer+"'s record! ("+mdto.hightScore/1000.0+"s)");  
 	    		    	  
 	    	alert.setNegativeButton("Retry", new DialogInterface.OnClickListener() {  
 	    	  public void onClick(DialogInterface dialog, int whichButton) {  
 	    	    // Canceled.  
 	    		  mGLSurfaceView.getMRenderer().getGameManager().reset();
-	        	  chronometer.setBase(SystemClock.elapsedRealtime());
-	        	  chronometer.start();
-	        	  
+	        	  mGLSurfaceView.setVisibility(View.VISIBLE);
 	    	  }  
 	    	}); 
     	}

@@ -90,11 +90,11 @@ public class GameMap {
     	return gm;
     }
     public static GameMap getGameMap(MapDto mdto){
-    	if(gm==null){
+    	//if(gm==null){
 
 				gm = new GameMap(mdto);
 			
-    	}
+    	//}
     	return gm;
     }
 	

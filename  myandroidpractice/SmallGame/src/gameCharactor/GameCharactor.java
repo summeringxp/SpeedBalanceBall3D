@@ -4,6 +4,8 @@ import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import storageTools.MapDto;
+
 import android.opengl.Matrix;
 import android.os.SystemClock;
 
@@ -12,6 +14,7 @@ import edu.xiapei.GameMap.CubeDrawer;
 import edu.xiapei.GameMap.Drawable;
 import edu.xiapei.GameMap.GameMap;
 import edu.xiapei.GameMap.MapElements;
+import gameTools.GameTools;
 
 public class GameCharactor {
 	public float posMatrix[]=new float[]{
@@ -25,17 +28,37 @@ public class GameCharactor {
 	private float acceleration[]= new float[3];
 	
 	private float size;
-	private float mass=0.2f;
+	private float mass=1.0f;
 	private float resistanceFactor=1.02f;
-	private float jumpFactor=0.3f;
+	private float jumpFactor=0.5f;
 	private Drawable drawer;
 	private long birthtime;
-	public GameCharactor(){
-		
+	private float[] initPos;
+	private MapDto mdto;
+	public GameCharactor(MapDto mdto){
+		this.mdto = mdto;
+		initPos = findInitPos();
 		reset();
 		drawer = new BallDrawer(size,0);
 	}
+	private float[] findInitPos() {
+		int[][] tempType = GameTools.stringToArray(mdto.mapType);
+		int[][] tempHeight = GameTools.stringToArray(mdto.mapHeight);
+		
+		float x=0.0f,y=0.0f,z=0.0f;
+		for(int i=0;i<Statics.MAPWIDTH;i++){
+			for(int j=0;j<Statics.MAPHIGHT;j++){
+				if(tempType[i][j]==Statics.START){
+					x = i+0.5f;
+					y = j+0.5f;
+					z = getHeight(i+0.5f, j+0.5f)+size;
+				}
+			}
+		}
+		return new float[]{x,y,z};
+	}
 	public GameCharactor(float mass, float resistanceFactor,float jumpFactor,int size,int x,int y) {
+		birthtime = System.currentTimeMillis();
 		acceleration = new float[3];
 		this.mass = mass;
 		this.resistanceFactor = resistanceFactor;
@@ -108,16 +131,16 @@ public class GameCharactor {
 		}
 		
 		if(!outsideMap(tempPos[0]+size/2,tempPos[1],tempPos[2])){
-			if((speed[0]>=0&&getHeight(tempPos[0]+size/2,tempPos[1])-getHeight(posMatrix[12]+size/2,posMatrix[13])>0.05f)||
-				(speed[0]<=0&&getHeight(tempPos[0]-size/2,tempPos[1])-getHeight(posMatrix[12]-size/2,posMatrix[13])>0.05f)){
+			if((speed[0]>=0&&getHeight(tempPos[0]+size/2,tempPos[1])-getHeight(posMatrix[12]+size/2,posMatrix[13])>0.2f)||
+				(speed[0]<=0&&getHeight(tempPos[0]-size/2,tempPos[1])-getHeight(posMatrix[12]-size/2,posMatrix[13])>0.2f)){
 				speed[0]=-speed[0]*jumpFactor;
 				tempPos[0] = posMatrix[12]+speed[0];
 			}
 		}
 		
 		if(!outsideMap(tempPos[0],tempPos[1]+size/2,tempPos[2])){
-			if((tempPos[1]>=posMatrix[13]&&getHeight(tempPos[0],tempPos[1]+size/2)-getHeight(posMatrix[12],posMatrix[13]+size/2)>0.05)||
-				(tempPos[1]<=posMatrix[13]&&getHeight(tempPos[0],tempPos[1]-size/2)-getHeight(posMatrix[12],posMatrix[13]-size/2)>0.05)){
+			if((tempPos[1]>=posMatrix[13]&&getHeight(tempPos[0],tempPos[1]+size/2)-getHeight(posMatrix[12],posMatrix[13]+size/2)>0.2)||
+				(tempPos[1]<=posMatrix[13]&&getHeight(tempPos[0],tempPos[1]-size/2)-getHeight(posMatrix[12],posMatrix[13]-size/2)>0.2)){
 				speed[1]=-speed[1]*jumpFactor;
 				tempPos[1] = posMatrix[13]+speed[1];
 			}
@@ -142,11 +165,11 @@ public class GameCharactor {
 	}
 	public void reset() {
 		// TODO Auto-generated method stub
-		birthtime = SystemClock.currentThreadTimeMillis();
+		birthtime = System.currentTimeMillis();
 		size = 0.4f;
-		posMatrix[12] = 1.5f;
-		posMatrix[13] = 1.5f;
-		posMatrix[14] = GameMap.getGameMap().getElements(1, 1).getHight(0.5f, 0.5f)+size;
+		posMatrix[12] = initPos[0];
+		posMatrix[13] = initPos[1];
+		posMatrix[14] = initPos[2];
 		force[0]=0.0f;force[1]=0.0f;force[2]=0.0f;
 		speed[0]=0.0f;speed[1]=0.0f;speed[2]=0.0f;
 		acceleration[0]=0.0f;acceleration[1]=0.0f;acceleration[2]=0.0f;
@@ -169,18 +192,8 @@ public class GameCharactor {
 		
 			float temp[] = GameMap.getGameMap().getElements(x, y).getForce();
 			addForce(temp[0],temp[1],temp[2]);
-		}
-		
-		
-		//GameMap gm = GameMap.getGameMap();
-		//GameMapElement center = gm.g
-		
-		
-		
+		}	
 	}
-	/*public float[] getPos(){
-		return new float[]{posMatrix[12],posMatrix[13],posMatrix[14]};
-	}*/
 	public void addForce(float x, float y, float z) {
 		// TODO Auto-generated method stub
 		force[0]+=x;
@@ -204,11 +217,10 @@ public class GameCharactor {
 		}
 	}
 	private boolean outsideMap(float x,float y,float z) {
-		// TODO Auto-generated method stub
-		return x<0||x>8||y<0||y>8||z<0;
+		return x<0||x>Statics.MAPWIDTH-1||y<0||y>Statics.MAPHIGHT-1||z<0;
 	}
 	public long getLife(){
-		return SystemClock.currentThreadTimeMillis()-birthtime;
+		return System.currentTimeMillis()- birthtime;
 	}
 	
 	
