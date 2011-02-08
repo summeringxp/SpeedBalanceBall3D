@@ -23,43 +23,49 @@ public class GameCharactor {
 		0.0f,0.0f,1.0f,0.0f,
 		0.0f,0.0f,0.0f,1.0f
 	};
-	private float force[] = new float[3];
-	private float speed[]= new float[3];
-	private float acceleration[]= new float[3];
+	protected float force[] = new float[3];
+	protected float speed[]= new float[3];
+	protected float acceleration[]= new float[3];
 	
-	private float size;
-	private float mass=1.0f;
-	private float resistanceFactor=1.02f;
+	protected float size;
+	private float mass=4.0f;
+	private float resistanceFactor=1f;
 	private float jumpFactor=0.5f;
-	private Drawable drawer;
-	private long birthtime;
-	private float[] initPos;
-	private MapDto mdto;
+	protected Drawable drawer;
+	protected long birthtime;
+	protected float[] initPos =new float[3];
+	protected boolean isDied =false;
+	protected MapDto mdto;
+	
+	public void setMdto(MapDto mdto) {
+		this.mdto = mdto;
+		reset();
+	}
 	public GameCharactor(MapDto mdto){
 		this.mdto = mdto;
-		initPos = findInitPos();
+		
 		reset();
 		drawer = new BallDrawer(size,0);
 	}
-	private float[] findInitPos() {
+	protected void findInitPos(int type) {
 		int[][] tempType = GameTools.stringToArray(mdto.mapType);
-		int[][] tempHeight = GameTools.stringToArray(mdto.mapHeight);
+		//int[][] tempHeight = GameTools.stringToArray(mdto.mapHeight);
 		
-		float x=0.0f,y=0.0f,z=0.0f;
+		
 		for(int i=0;i<Statics.MAPWIDTH;i++){
 			for(int j=0;j<Statics.MAPHIGHT;j++){
-				if(tempType[i][j]==Statics.START){
-					x = i+0.5f;
-					y = j+0.5f;
-					z = getHeight(i+0.5f, j+0.5f)+size;
+				if(tempType[j][i]==type){
+					initPos[0] = i+0.5f;
+					initPos[1] = j+0.5f;
+					initPos[2] = getHeight(i+0.5f, j+0.5f)+size;
+					return;
 				}
 			}
 		}
-		return new float[]{x,y,z};
+		
 	}
 	public GameCharactor(float mass, float resistanceFactor,float jumpFactor,int size,int x,int y) {
 		birthtime = System.currentTimeMillis();
-		acceleration = new float[3];
 		this.mass = mass;
 		this.resistanceFactor = resistanceFactor;
 		this.size = size;
@@ -78,10 +84,31 @@ public class GameCharactor {
 	public void draw(GL10 gl,long t) {
 		// TODO Auto-generated method stub
 		gl.glPushMatrix();
-		gl.glMultMatrixf(this.posMatrix,0);
-		Matrix.rotateM(this.posMatrix, 0, 20.0f, 1.0f*(t%13-6), 1.0f*(t%10-5), 1.0f*(t%17-8));
+		//gl.glMultMatrixf(this.posMatrix,0);
 		
-		drawer.draw(gl);
+		gl.glTranslatef(posMatrix[12], posMatrix[13], posMatrix[14]);
+		double theta1 = (posMatrix[12]-initPos[0])*720/Math.PI*size;
+		double theta2 = (posMatrix[13]-initPos[1])*720/Math.PI*size;
+		//Matrix.rotateM(this.posMatrix, 0, theta1, 0.0f, 1.0f, 0.0f);
+		//Matrix.rotateM(this.posMatrix, 0, theta2, 1.0f, 0.0f, 0.0f);
+		float initMatrix1[]=new float[]{
+				1.0f,0.0f,0.0f,0.0f,
+				0.0f,1.0f,0.0f,0.0f,
+				0.0f,0.0f,1.0f,0.0f,
+				0.0f,0.0f,0.0f,1.0f
+			};
+		float initMatrix2[]=new float[]{
+				1.0f,0.0f,0.0f,0.0f,
+				0.0f,1.0f,0.0f,0.0f,
+				0.0f,0.0f,1.0f,0.0f,
+				0.0f,0.0f,0.0f,1.0f
+			};
+		Matrix.rotateM(initMatrix1, 0, (float) (theta1*2), 0.0f, 1.0f, 0.0f);
+		Matrix.rotateM(initMatrix2, 0, (float) (-theta2*2), 1.0f, 0.0f, 0.0f);
+		//Matrix.rotateM(initMatrix, 0, (float) (theta2*2), (float)Math.cos(-theta1*Math.PI/180), 0.0f, (float)Math.sin(-theta1*Math.PI/180));
+		gl.glMultMatrixf(initMatrix1, 0);
+		gl.glMultMatrixf(initMatrix2, 0);
+		drawer.draw(gl,t);
 		gl.glPopMatrix();
 		
 		prepareForNextFrame(t);
@@ -93,9 +120,10 @@ public class GameCharactor {
 		caculateForce();
 		
 		for(int i = 0;i<3;i++){
+			force[i] = force[i]-resistanceFactor*getResis()*speed[i];
 			acceleration[i]=force[i]/mass;
 			speed[i]+=acceleration[i]*t;
-			speed[i]/=resistanceFactor;		
+			//speed[i]/=resistanceFactor;		
 			force[i]=0;
 		}
 		
@@ -110,9 +138,9 @@ public class GameCharactor {
 	}
 	private void checkBoudary(long t) {
 		// TODO Auto-generated method stub
-		int x = (int) posMatrix[12];
-		int y = (int) posMatrix[13];
-		int z = (int) posMatrix[14];
+		int x = (int)Math.floor(posMatrix[12]);
+		int y = (int)Math.floor(posMatrix[13]);
+		int z = (int)Math.floor(posMatrix[14]);
 		float tempPos[]= new float[3];
 		for(int i=0;i<3;i++){
 			tempPos[i] = posMatrix[i+12]+speed[i]*t;
@@ -128,21 +156,34 @@ public class GameCharactor {
 		if(tempPos[2]<tempH+size){
 			tempPos[2] = tempH+size;
 			speed[2]=-speed[2]*jumpFactor;
+			speed[2]=speed[2]>0.05f?speed[2]:0;
+			
 		}
 		
 		if(!outsideMap(tempPos[0]+size/2,tempPos[1],tempPos[2])){
-			if((speed[0]>=0&&getHeight(tempPos[0]+size/2,tempPos[1])-getHeight(posMatrix[12]+size/2,posMatrix[13])>0.2f)||
-				(speed[0]<=0&&getHeight(tempPos[0]-size/2,tempPos[1])-getHeight(posMatrix[12]-size/2,posMatrix[13])>0.2f)){
-				speed[0]=-speed[0]*jumpFactor;
+			if(getHeight(tempPos[0]+size/2,tempPos[1])-posMatrix[14]>0.1f){
+				
+				if(speed[0]>0)speed[0]=-speed[0]*jumpFactor;
 				tempPos[0] = posMatrix[12]+speed[0];
+				tempPos[0] = (float) (tempPos[0]>(Math.ceil(tempPos[0])-size/2)?Math.ceil(tempPos[0])-size/2:tempPos[0]);
+			}
+			if(getHeight(tempPos[0]-size/2,tempPos[1])-posMatrix[14]>0.1f){
+				if(speed[0]<0)speed[0]=-speed[0]*jumpFactor;
+				tempPos[0] = posMatrix[12]+speed[0];
+				tempPos[0] = (float) (tempPos[0]<(Math.floor(tempPos[0])+size/2)?Math.floor(tempPos[0])+size/2:tempPos[0]);
 			}
 		}
 		
 		if(!outsideMap(tempPos[0],tempPos[1]+size/2,tempPos[2])){
-			if((tempPos[1]>=posMatrix[13]&&getHeight(tempPos[0],tempPos[1]+size/2)-getHeight(posMatrix[12],posMatrix[13]+size/2)>0.2)||
-				(tempPos[1]<=posMatrix[13]&&getHeight(tempPos[0],tempPos[1]-size/2)-getHeight(posMatrix[12],posMatrix[13]-size/2)>0.2)){
-				speed[1]=-speed[1]*jumpFactor;
+			if(getHeight(tempPos[0],tempPos[1]+size/2)-posMatrix[14]>0.1){
+				if(speed[1]>0)speed[1]=-speed[1]*jumpFactor;
 				tempPos[1] = posMatrix[13]+speed[1];
+				tempPos[1] = (float) (tempPos[1]>(Math.ceil(tempPos[1])-size/2)?Math.ceil(tempPos[1])-size/2:tempPos[1]);
+			}
+			if(getHeight(tempPos[0],tempPos[1]-size/2)-posMatrix[14]>0.1){
+				if(speed[1]<0)speed[1]=-speed[1]*jumpFactor;
+				tempPos[1] = posMatrix[13]+speed[1];
+				tempPos[1] = (float) (tempPos[1]<(Math.floor(tempPos[1])+size/2)?Math.floor(tempPos[1])+size/2:tempPos[1]);
 			}
 		}
 		
@@ -154,44 +195,52 @@ public class GameCharactor {
 			
 		}
 	}
-	private float getHeight(float x,float y){
+	protected float getHeight(float x,float y){
 		int x1 = (int) x;
 		int y1 = (int) y;
 		return GameMap.getGameMap().getElements(x1, y1).getHight(x-x1, y-y1);
 	}
+	private float getResis(){
+		int x1 = (int) posMatrix[12];
+		int y1 = (int) posMatrix[13];
+		if(outsideMap(posMatrix[12],posMatrix[13],posMatrix[14])){
+			return 0;
+		}else return GameMap.getGameMap().getElements(x1, y1).getResistant();
+	}
 	private void dealDie() {
 		// TODO Auto-generated method stub
-		reset();
+		isDied=true;
 	}
 	public void reset() {
 		// TODO Auto-generated method stub
+		findInitPos(13);
 		birthtime = System.currentTimeMillis();
-		size = 0.4f;
+		size = 0.25f;
 		posMatrix[12] = initPos[0];
 		posMatrix[13] = initPos[1];
 		posMatrix[14] = initPos[2];
 		force[0]=0.0f;force[1]=0.0f;force[2]=0.0f;
 		speed[0]=0.0f;speed[1]=0.0f;speed[2]=0.0f;
 		acceleration[0]=0.0f;acceleration[1]=0.0f;acceleration[2]=0.0f;
+		isDied=false;
 	}
+	
 	private void caculateForce() {
 		//          O
 		//         OOO
 		//          O
 		//
-		int x = (int) posMatrix[12];
-		int y = (int) posMatrix[13];
-		int z = (int) posMatrix[14];
+		int x = (int)Math.floor(posMatrix[12]);
+		int y = (int)Math.floor(posMatrix[13]);
+		int z = (int)Math.floor(posMatrix[14]);
 		
 		if(outsideMap(x,y,z)){
 			force[2]-=0.005;
 			return;
-		}else if(GameMap.getGameMap().getElements(x, y).getHight(posMatrix[12]-x, posMatrix[13]-y)<posMatrix[14]-size){
+		}else if(getHeight(posMatrix[12], posMatrix[13])<=posMatrix[14]-size/2){
 			force[2]-=0.005;
-			
-		
 			float temp[] = GameMap.getGameMap().getElements(x, y).getForce();
-			addForce(temp[0],temp[1],temp[2]);
+			addForce(temp[0]/5,temp[1]/5,temp[2]/5);
 		}	
 	}
 	public void addForce(float x, float y, float z) {
@@ -200,7 +249,9 @@ public class GameCharactor {
 		force[1]+=y;
 		force[2]+=z;
 	}
-	
+	public float[] getInitPos() {
+		return initPos;
+	}
 	public boolean charDie(){
 		
 		return posMatrix[14]<-20.0f;
@@ -217,10 +268,16 @@ public class GameCharactor {
 		}
 	}
 	private boolean outsideMap(float x,float y,float z) {
-		return x<0||x>Statics.MAPWIDTH-1||y<0||y>Statics.MAPHIGHT-1||z<0;
+		return x<0||x>=Statics.MAPWIDTH||y<0||y>=Statics.MAPHIGHT||z<0;
 	}
 	public long getLife(){
 		return System.currentTimeMillis()- birthtime;
+	}
+	public boolean isDied() {
+		return isDied;
+	}
+	public void setDied(boolean isDied) {
+		this.isDied = isDied;
 	}
 	
 	

@@ -22,7 +22,7 @@ public class SlopNorth extends MapElements {
 	public float getHight(float x, float y) {
 		// TODO Auto-generated method stub
 		
-		return (1.0f-y)/2.0f+(2.0f+hight)/2.0f;
+		return (1.0f-y)/2.0f+(1.0f+hight)/2.0f;
 	}
 
 	@Override

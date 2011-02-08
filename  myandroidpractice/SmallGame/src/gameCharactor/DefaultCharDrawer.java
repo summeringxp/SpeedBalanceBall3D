@@ -56,7 +56,7 @@ public class DefaultCharDrawer implements Drawable {
         mIndexBuffer.position(0);
 	}
 	@Override
-	public void draw(GL10 gl) {
+	public void draw(GL10 gl,long t) {
 		gl.glFrontFace(GL10.GL_CW);
         gl.glVertexPointer(3, GL10.GL_FIXED, 0, mVertexBuffer);
         gl.glColorPointer(4, GL10.GL_FIXED, 0, mColorBuffer);

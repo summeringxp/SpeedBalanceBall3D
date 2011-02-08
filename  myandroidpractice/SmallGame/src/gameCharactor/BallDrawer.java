@@ -109,7 +109,7 @@ public class BallDrawer implements Drawable {
 	        mIndexBuffer.position(0);
 		// TODO Auto-generated constructor stub
 	}
-	public void draw(GL10 gl) {
+	public void draw(GL10 gl,long t) {
 		gl.glFrontFace(GL10.GL_CW);
         gl.glVertexPointer(3, GL10.GL_FIXED, 0, mVertexBuffer);
         gl.glColorPointer(4, GL10.GL_FIXED, 0, mColorBuffer);

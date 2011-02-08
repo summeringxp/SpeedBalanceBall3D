@@ -29,14 +29,11 @@ public class MapViewRenderer implements GLSurfaceView.Renderer {
        gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
        gl.glMatrixMode(GL10.GL_MODELVIEW);
        gl.glLoadIdentity();
+   
        
        GLU.gluLookAt(gl, 8.0f+8.0f*(float)Math.cos(mRotate/1000.0f), 8.0f+8.0f*(float)Math.sin(mRotate/1000.0f), 6.5f, 8.0f, 8.0f, 0.0f, 0.0f, 0.0f, 1.0f);
-       
-       
-       
        mRotate=(mRotate+12)%360000;
-       
-       gameMap.drawMapElements(gl);
+     //  gameMap.drawMapElements(gl);
 
        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
        gl.glEnableClientState(GL10.GL_COLOR_ARRAY);         

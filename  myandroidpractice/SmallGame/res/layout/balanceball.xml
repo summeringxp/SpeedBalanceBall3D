@@ -8,7 +8,7 @@
             android:layout_height="0px"
             android:layout_weight="1">
 
-        <edu.xiapei.GameSurfaceView android:id="@+id/menuview"
+        <android.opengl.GLSurfaceView android:id="@+id/menuview"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
     <LinearLayout
@@ -65,25 +65,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:text="Next" />
-        <Button android:id="@+id/reset"
-         android:layout_width="60dip"
+    <Button android:id="@+id/reset"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:text="Reset"
         />
     <Button android:id="@+id/back"
-        android:layout_width="60dip"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:text="Back"
         />
-        <Button android:id="@+id/save"
-        android:layout_width="60dip"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="Save"
-        />
-        <TextView
+    <TextView
     	android:id="@+id/mapinfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

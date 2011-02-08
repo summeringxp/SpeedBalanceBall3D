@@ -44,7 +44,6 @@ import android.widget.TextView;
 
 public class SmallGame extends Activity {
 	private GameSurfaceView mGLSurfaceView;
-	private Chronometer chronometer;
 	
 	private MapDao md;
 	private int mapindex=-1;
@@ -69,7 +68,7 @@ public class SmallGame extends Activity {
          mGLSurfaceView = (GameSurfaceView) findViewById(R.id.glsurfaceview);
          md = new MapDao(this);
          
-         GameRenderer mRenderer = new GameRenderer(md.find(mapindex));
+         GameRenderer mRenderer = new GameRenderer(md.find(mapindex),null);
          mGLSurfaceView.setGameRenderer(mRenderer);
          
          final Handler mHandler = new Handler(){

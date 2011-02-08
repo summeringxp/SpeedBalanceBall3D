@@ -36,11 +36,11 @@ public class GameCharactorManager  {
 	}
 	public int checkState() {
 		// TODO Auto-generated method stub
-		for(int i= 0;i<gameChars.size();i++){
-			if(gameChars.get(i).currentMapType()==Statics.TARGET){
+		//for(int i= 0;i<gameChars.size();i++){
+			if(gameChars.get(0).currentMapType()==Statics.TARGET){
 				return 1;
 			}
-		}
+		//}
 		return 0;
 	}
 

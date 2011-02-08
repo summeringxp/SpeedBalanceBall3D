@@ -14,7 +14,7 @@ public class GameSurfaceView extends GLSurfaceView implements SensorEventListene
 
     public GameSurfaceView(Context context, AttributeSet attrs) {
         super(context,attrs);
-        mSensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         mSensorManager.registerListener(this,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_FASTEST);
@@ -30,11 +30,27 @@ public class GameSurfaceView extends GLSurfaceView implements SensorEventListene
 		
         
             if (e.sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
-            	 float x = -(float) (e.values[0]/20.0);
-            	 float y = (float) (e.values[1]/20.0);
-            	 float z = (float) (e.values[2]/20.0);
-            	 mRenderer.fTransX = x * Statics.TRACKBALL_SCALE_FACTOR;
-                 mRenderer.fTransY = y * Statics.TRACKBALL_SCALE_FACTOR;
+            	 float x = e.values[0];
+            	 float y = e.values[1];
+            	// float z = (float) (e.values[2]/40.0);
+            	 if(x>0){
+            		 x-=0.5;
+            		 x=x>0?x:0;
+            	 }else{
+            		 x+=0.5;
+            		 x=x<-0?x:-0;
+            	 }
+            	 if(y>0){
+            		 y-=0.5;
+            		 y=y>0?y:0;
+            	 }else{
+            		 y+=0.5;
+            		 y=y<0?y:0;
+            	 }
+            	 x /=40.0f;
+            	 y /=40.0f;
+            	 mRenderer.fTransX = y * Statics.TRACKBALL_SCALE_FACTOR;
+                 mRenderer.fTransY = x * Statics.TRACKBALL_SCALE_FACTOR;
             }         
         
 		return ;
@@ -42,7 +58,7 @@ public class GameSurfaceView extends GLSurfaceView implements SensorEventListene
     
    
 
-  /*  @Override public boolean onTrackballEvent(MotionEvent e) {
+   /* @Override public boolean onTrackballEvent(MotionEvent e) {
         mRenderer.fTransX = e.getX() * Statics.TRACKBALL_SCALE_FACTOR;
         mRenderer.fTransY = e.getY() * Statics.TRACKBALL_SCALE_FACTOR;
        // requestRender();
@@ -57,8 +73,8 @@ public class GameSurfaceView extends GLSurfaceView implements SensorEventListene
         case MotionEvent.ACTION_MOVE:
             float dx = x - mPreviousX;
             float dy = y - mPreviousY;
-            mRenderer.mTransX = dx * Statics.TOUCH_SCALE_FACTOR;
-            mRenderer.mTransY = dy * Statics.TOUCH_SCALE_FACTOR;
+            mRenderer.mTransX = -dx * Statics.TOUCH_SCALE_FACTOR;
+            mRenderer.mTransY = -dy * Statics.TOUCH_SCALE_FACTOR;
             requestRender();
         }
         mPreviousX = x;

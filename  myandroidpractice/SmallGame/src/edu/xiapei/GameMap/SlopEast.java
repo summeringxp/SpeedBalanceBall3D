@@ -12,7 +12,7 @@ public class SlopEast extends MapElements {
 	@Override
 	public float getHight(float x, float y) {
 		// TODO Auto-generated method stub
-		return (x-1.0f)/2.0f+(1.0f+hight)/2.0f;
+		return x/2.0f+(1.0f+hight)/2.0f;
 	}
 
 	@Override

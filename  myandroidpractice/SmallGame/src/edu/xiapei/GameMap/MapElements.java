@@ -35,15 +35,20 @@ public abstract class MapElements implements Drawable
     }
     private Drawable drawer;
     
-    public abstract float getHight(float x,float y);
+    public float getHight(float x,float y){
+    	return (1.0f+hight)/2.0f;
+    }
     
 	@Override
-	public void draw(GL10 gl) {
+	public void draw(GL10 gl,long t) {
 		// TODO Auto-generated method stub
-		drawer.draw(gl);
+		drawer.draw(gl,t);
 	}
 
 	public abstract float[] getForce();
+	public float getResistant(){
+		return 0.025f;
+	}
 	
 	
 }

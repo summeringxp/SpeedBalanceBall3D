@@ -9,12 +9,6 @@ public class Target extends MapElements {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public float getHight(float x, float y) {
-		// TODO Auto-generated method stub
-		
-		return 0.5f;
-	}
 
 	@Override
 	public float[] getForce() {
