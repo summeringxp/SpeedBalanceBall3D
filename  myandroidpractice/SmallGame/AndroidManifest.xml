@@ -13,7 +13,7 @@
         </activity>
 
     
-<activity android:name="SmallGame"></activity>
+<activity android:name="SpeedBalanceBall"></activity>
 </application>
 
 

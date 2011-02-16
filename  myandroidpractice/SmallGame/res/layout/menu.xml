@@ -22,36 +22,51 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="5dip"
-        android:text="Start!" />
+        android:text="Start!" /><!--
     <Button
     	android:id="@+id/edit"
         android:layout_width="90dip"
         android:layout_height="wrap_content"
         android:text="Edit Map" />
+    -->
     <Button
    		 android:id="@+id/exit"
         android:layout_width="90dip"
         android:layout_height="wrap_content"
         android:text="Exit" />
     </LinearLayout>  
-    </FrameLayout>   
-  <LinearLayout
+      
+  <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="right">
      	 <TextView
     	android:id="@+id/hsinfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="right"
         android:textSize="20sp"
         android:text="BestRecord: 13s. by xia" />
-    </LinearLayout>
+    </RelativeLayout>
+     <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left">
+     	 <TextView
+    	android:id="@+id/timeinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textSize="20sp"
+        android:text="   HighScoreTimeLeft" />
+    </RelativeLayout>
     <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_gravity="bottom">
      <Button
         android:id="@+id/pre"
         android:layout_width="60dip"
@@ -94,4 +109,5 @@
         android:layout_marginTop="10dip"
         android:text="LostTemple. 夏" />
     </RelativeLayout>
+    </FrameLayout> 
 </LinearLayout>

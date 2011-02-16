@@ -27,12 +27,19 @@ public class BallDrawer implements Drawable {
 		int gridV1 = gridV + 1;
 		int incU = 360 / gridU;
 		int incV = 2 * mRadius / gridV;
-		int cnt;
+		int cnt,cnt2;
 
-					
+		int[] colors = new int[(2 + (gridV1-2) * gridU) * 4];
+		
+		cnt = 0;
+		Random rand = new Random();
+		int[] tempc = new int[]{0x10000,0x10000,0x10000,0,0x10000,0,0x10000,0,0};
+//		for(int i=0;i<9;i++){
+//		tempc[i] = rand.nextInt();
+//		}
 		//vertices
 		int[] vertices = new int[(2 + (gridV1-2) * gridU) * 3];
-		cnt = 0;
+		cnt = 0;cnt2=0;
 		vertices[cnt++] = 0;
 		vertices[cnt++] = -mRadius;
 		vertices[cnt++] = 0;
@@ -46,6 +53,10 @@ public class BallDrawer implements Drawable {
 				vertices[cnt++] = (int)(r * Math.cos(t));
 				vertices[cnt++] = (int)y;
 				vertices[cnt++] = (int)(r * Math.sin(t));
+				colors[cnt2++] = tempc[3*(iu%3)];
+				colors[cnt2++] =tempc[3*(iu%3)+1];
+				colors[cnt2++] = tempc[3*(iu%3)+2];
+				colors[cnt2++] = 0x10000;
 			}
 		}
 		vertices[cnt++] = 0;
@@ -82,15 +93,7 @@ public class BallDrawer implements Drawable {
 			indices[cnt++] = (byte)n;
 		}
 
-		int[] colors = new int[(2 + (gridV1-2) * gridU) * 4];
-		cnt = 0;
-		Random rand = new Random();
-		for( int i1 = 0; i1 < colors.length; i1 += 4 ) {
-			colors[cnt++] = rand.nextInt();
-			colors[cnt++] = rand.nextInt();
-			colors[cnt++] = rand.nextInt();
-			colors[cnt++] = 0x10000;
-		}
+		
 		
 		 ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);
 	        vbb.order(ByteOrder.nativeOrder());

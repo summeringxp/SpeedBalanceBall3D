@@ -13,10 +13,12 @@ import android.opengl.GLU;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
+import android.view.WindowManager;
 import gameCharactor.GameCharactor;
 import gameCharactor.TargetFlag;
 import gameTools.GLTextureFactory;
 import gameTools.GLTextures;
+import gameTools.Graphics2D;
 
 public class GameRenderer implements GLSurfaceView.Renderer {
 	
@@ -47,8 +49,10 @@ public class GameRenderer implements GLSurfaceView.Renderer {
        gl.glActiveTexture(GL10.GL_TEXTURE0);
        gl.glLoadIdentity();
        if(gameManager.getGameStep()==1){
-	      // gameManager.getMyCamera().externForce(mTransX, -mTransY,0);
-	       gameManager.getGameCharMngr().externForce(fTransX*0.05f,-fTransY*0.05f,0.0f);
+	       gameManager.getMyCamera().changeView(mTransX, mTransY);
+	       gameManager.setForce(fTransX, fTransY);
+	       float f[]= transForce(fTransX,fTransY,gameManager.getMyCamera().getTheta());
+	       gameManager.getGameCharMngr().externForce(f[0]*0.05f,-f[1]*0.05f,0.0f);
 	       mTransX=0;
 	       mTransY=0;
 	       fTransX=0;
@@ -74,8 +78,16 @@ public class GameRenderer implements GLSurfaceView.Renderer {
    }
 
 
+	private float[] transForce(float transX, float transY, float theta) {
+	// TODO Auto-generated method stub
+		double xr = transX*Math.cos(theta)+transY*Math.sin(theta);
+		double yr = -transX*Math.sin(theta)+transY*Math.cos(theta);
+		return new float[]{(float)xr,(float)yr};
+}
+	
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
         gl.glViewport(0, 0, width, height);
+        
         float ratio = (float) width / height;
         gl.glMatrixMode(GL10.GL_PROJECTION);
         gl.glLoadIdentity();
@@ -86,6 +98,8 @@ public class GameRenderer implements GLSurfaceView.Renderer {
 	   GLTextureFactory.allocateTextures(gl, context);
 	  // glt = new GLTextures(gl, context); 
 	  // glt.add(R.drawable.icon1);
+	   WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+	   gameManager.setG(new Graphics2D(gl),wm.getDefaultDisplay().getWidth(),wm.getDefaultDisplay().getHeight());
        gl.glDisable(GL10.GL_DITHER);
         gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT,
                 GL10.GL_FASTEST);

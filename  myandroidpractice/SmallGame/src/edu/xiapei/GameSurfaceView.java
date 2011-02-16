@@ -51,6 +51,7 @@ public class GameSurfaceView extends GLSurfaceView implements SensorEventListene
             	 y /=40.0f;
             	 mRenderer.fTransX = y * Statics.TRACKBALL_SCALE_FACTOR;
                  mRenderer.fTransY = x * Statics.TRACKBALL_SCALE_FACTOR;
+                 
             }         
         
 		return ;
@@ -73,8 +74,8 @@ public class GameSurfaceView extends GLSurfaceView implements SensorEventListene
         case MotionEvent.ACTION_MOVE:
             float dx = x - mPreviousX;
             float dy = y - mPreviousY;
-            mRenderer.mTransX = -dx * Statics.TOUCH_SCALE_FACTOR;
-            mRenderer.mTransY = -dy * Statics.TOUCH_SCALE_FACTOR;
+            mRenderer.mTransX = -dx /** Statics.TOUCH_SCALE_FACTOR*/;
+            mRenderer.mTransY = -dy /** Statics.TOUCH_SCALE_FACTOR*/;
             requestRender();
         }
         mPreviousX = x;

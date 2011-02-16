@@ -8,14 +8,13 @@ import android.os.SystemClock;
 import android.view.View;
 import android.widget.TextView;
 
-import edu.xiapei.GameMap.GameMap;
 import edu.xiapei.GameMap.*;
-import edu.xiapei.GameMap.MapElements;
 import gameAnimations.GameAnimation;
 import gameAnimations.OpenningAnima;
 import gameCharactor.GameCharactor;
 import gameCharactor.GameCharactorManager;
 import gameTools.GameTools;
+import gameTools.Graphics2D;
 import gameTools.MyCamera;
 
 public class GameManager {
@@ -31,14 +30,21 @@ public class GameManager {
 	private long lastTimer;
 	private int state;
 	private int gameStep=0;
-	
+	private Graphics2D g;
 	private TextView textView;
 	private static int WIN=1;
 	private static int LOSE=2;
 	private static int OVER=3;
-
+	private int width,height;
+	private long recordTime;
+	private float fx,fy;
 	
-	
+	public void setG(Graphics2D g, int width, int height) {
+		this.g = g;
+		this.width=width;
+		this.height=height;
+		g.init(width, height);
+	}
 	public MyCamera getMyCamera() {
 		return myCamera;
 	}
@@ -107,7 +113,7 @@ public class GameManager {
 			reset();
 		}
         lastTimer = SystemClock.currentThreadTimeMillis();
-        //drawGameInfo(gl);
+        drawGameInfo(gl);
 	}
 	public void goEdit(GL10 gl) {
 		gl.glPushMatrix();
@@ -125,13 +131,31 @@ public class GameManager {
 	}
 	private void drawGameInfo(GL10 gl) {
 		
-		gl.glPushMatrix();
-		gl.glMatrixMode(gl.GL_PROJECTION);
-		gl.glLoadIdentity();
-		gl.glOrthox(0, 320, 0, 480, 0, 1);
-		mUi.draw(gl);
-		gl.glMatrixMode(gl.GL_MODELVIEW);
-		gl.glPopMatrix();
+		gl.glViewport(0, 0, width, height);
+		gl.glMatrixMode(gl.GL_PROJECTION);	 // Select Projection
+		gl.glPushMatrix();	 // Push The Matrix
+		gl.glLoadIdentity();	 // Reset The Matrix
+		
+		gl.glOrthof(-width/2,width/2,-height/2,height/2,-100,100);    
+        gl.glTranslatef(-width/2,height/2,0);
+		gl.glMatrixMode(gl.GL_MODELVIEW);	 // Select Modelview Matrix
+		gl.glPushMatrix();	 // Push The Matrix
+		gl.glLoadIdentity();	 // Reset The Matrix
+		
+		        /* draw stuff */
+		
+		        mUi.draw(g,height,width,getPlayTime(),recordTime,fx,fy);
+		       		
+
+		gl.glMatrixMode( gl.GL_PROJECTION );	 // Select Projection
+		gl.glPopMatrix();	 // Pop The Matrix
+		gl.glMatrixMode( gl.GL_MODELVIEW );	 // Select Modelview
+		gl.glPopMatrix();	 // Pop The Matrix
+		
+		//gl.glOrthox(0, 320, 0, 480, 0, 1);
+		
+		//gl.glPopMatrix();
+		//gl.glMatrixMode(gl.GL_MODELVIEW);
 	}
 	public int getGameState(){
 		return state;
@@ -155,6 +179,13 @@ public class GameManager {
 		myCamera.setPos(gameCharMngr.getGameChar(0).getInitPos());
 		setState(0);
 	}
-
+	public void setRecordTime(long recordTime) {
+		this.recordTime = recordTime;
+	}
+	
+	public void setForce(float x,float y){
+		this.fx=x;
+		this.fy=y;
+	}
 
 }

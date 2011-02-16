@@ -35,12 +35,13 @@ import gameTools.GLTextureFactory;
 public class GameMenu extends Activity{
 	private MapDao md;
 	
-	private Button start,edit,exit,pre,next,reset,back,save;
+	private Button start,/*edit,*/exit,pre,next,reset,back,save;
 	private GameSurfaceView menuView;
 	private GameRenderer gameRenderer;
-	private TextView mapinfo,hsinfo;
+	private TextView mapinfo,hsinfo,timeinfo;
 	private int mapindex = 1;
 	private int mapCount = 1;
+	private long tempRec ;
 	//private int gameStep = 0;
 	private int time=0;
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,14 +51,18 @@ public class GameMenu extends Activity{
 	    md = new MapDao(this);
 		checkDatabase();
 		MapDto mdto = md.find(mapindex);
+		tempRec=mdto.hightScore;
 	    setContentView(R.layout.menu);
 	    menuView = (GameSurfaceView) findViewById(R.id.menuview);
 	    gameRenderer = new GameRenderer(mdto,this);
+	    gameRenderer.getGameManager().setRecordTime(tempRec);
 	    menuView.setGameRenderer(gameRenderer);
+	    
 		mapinfo = (TextView)findViewById(R.id.mapinfo);
 	    hsinfo = (TextView)findViewById(R.id.hsinfo);
+	    timeinfo = (TextView)findViewById(R.id.timeinfo);
 	    start = (Button) findViewById(R.id.start);
-	    edit = (Button) findViewById(R.id.edit);
+	    //edit = (Button) findViewById(R.id.edit);
 	    exit = (Button) findViewById(R.id.exit);
 	    pre = (Button) findViewById(R.id.pre);
 	    next = (Button) findViewById(R.id.next);
@@ -71,7 +76,7 @@ public class GameMenu extends Activity{
 	    next.setOnClickListener(mNextListener);
 	    reset.setOnClickListener(mResetListener);
 	    back.setOnClickListener(mBackListener);
-	    edit.setOnClickListener(mEditListener);
+	   // edit.setOnClickListener(mEditListener);
 	    
 	    hsinfo.setText("BestRecord: "+mdto.hightScore/1000.0+"s. by "+mdto.hsPlayer);
 	    mapinfo.setText(mdto.name +" "+mdto.author);
@@ -94,7 +99,8 @@ public class GameMenu extends Activity{
 			   mapinfo.setVisibility(View.VISIBLE);
 			    hsinfo.setVisibility(View.VISIBLE);
 			    start.setVisibility(View.VISIBLE);
-			    edit.setVisibility(View.VISIBLE);
+			    //edit.setVisibility(View.VISIBLE);
+			    timeinfo.setVisibility(View.INVISIBLE);
 			    exit.setVisibility(View.VISIBLE);
 			    pre.setVisibility(View.VISIBLE);
 			    next.setVisibility(View.VISIBLE);
@@ -104,23 +110,25 @@ public class GameMenu extends Activity{
 		   }else if(gameStep == 1){
 			  
 			    start.setVisibility(View.INVISIBLE);
-			    edit.setVisibility(View.INVISIBLE);
+			    //edit.setVisibility(View.INVISIBLE);
 			    exit.setVisibility(View.INVISIBLE);
+			    timeinfo.setVisibility(View.VISIBLE);
 			    pre.setVisibility(View.INVISIBLE);
 			    next.setVisibility(View.INVISIBLE);
 			    reset.setVisibility(View.VISIBLE);
 			    back.setVisibility(View.VISIBLE);
 			    save.setVisibility(View.INVISIBLE);
-		   }else if(gameStep == 2){
+		   }/*else if(gameStep == 2){
 			   start.setVisibility(View.INVISIBLE);
-			    edit.setVisibility(View.INVISIBLE);
+			   // edit.setVisibility(View.INVISIBLE);
 			    exit.setVisibility(View.INVISIBLE);
+			    timeinfo.setVisibility(View.INVISIBLE);
 			    pre.setVisibility(View.INVISIBLE);
 			    next.setVisibility(View.INVISIBLE);
 			    reset.setVisibility(View.INVISIBLE);
 			    back.setVisibility(View.VISIBLE);
 			    save.setVisibility(View.VISIBLE);
-		   }
+		   }*/
 	}
 	private void checkDatabase() {
 		mapCount = md.getMapNumber();
@@ -161,6 +169,7 @@ public class GameMenu extends Activity{
 			// TODO Auto-generated method stub
 			
 			gameRenderer.getGameManager().reset();
+			gameRenderer.getGameManager().setRecordTime(tempRec);
 			gameRenderer.getGameManager().setGameStep(1);
 			//gameRenderer.changeMap(md.find(mapindex));
 			
@@ -228,7 +237,9 @@ public class GameMenu extends Activity{
 				 gameRenderer.changeMap(mdto);
 				 hsinfo.setText("BestRecord: "+mdto.hightScore/1000.0+"s. by "+mdto.hsPlayer);
 				    mapinfo.setText(mdto.name +" "+mdto.author);
+				    tempRec = mdto.hightScore;
 				}
+				
 				 updateButtonState(gameRenderer.getGameManager().getGameStep());
 			}
 			 
@@ -244,6 +255,7 @@ public class GameMenu extends Activity{
 					 gameRenderer.changeMap(mdto);
 					 hsinfo.setText("BestRecord: "+mdto.hightScore/1000.0+"s. by "+mdto.hsPlayer);
 					    mapinfo.setText(mdto.name +" "+mdto.author);
+					    tempRec = mdto.hightScore;
 					}
 					
 					updateButtonState(gameRenderer.getGameManager().getGameStep());
@@ -267,7 +279,8 @@ public class GameMenu extends Activity{
 				    	  mdto.hightScore = time;
 				    	  mdto.hsPlayer = value;
 				    	  md.update(mdto);
-				    	  
+				    	  tempRec=time;
+				    	  gameRenderer.getGameManager().setRecordTime(tempRec);
 				    	  gameRenderer.getGameManager().reset();
 				    	  hsinfo.setText("BestRecord: "+mdto.hightScore/1000.0+"s. by "+mdto.hsPlayer);
 						    mapinfo.setText(mdto.name +" "+mdto.author);
