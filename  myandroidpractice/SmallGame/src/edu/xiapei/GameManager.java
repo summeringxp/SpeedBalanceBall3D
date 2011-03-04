@@ -95,9 +95,11 @@ public class GameManager {
 		// TODO Auto-generated method stub
 		
 		long t = SystemClock.currentThreadTimeMillis()-lastTimer;
-		t=t<10?t:10;
+		lastTimer = SystemClock.currentThreadTimeMillis();
+		t=t>60?60:t;
+		//t=t<10?10:t;
 		
-		myCamera.setCamera(gl, state==3?0:t);
+		myCamera.setCamera(gl, state==3?0:t/2);
 		
 		//gameAnima.play(gl);
 		//gameMap.drawMapElements(gl);
@@ -105,15 +107,15 @@ public class GameManager {
 				gameCharMngr.getGameChar(0).posMatrix[13]+0.5f,
 				gameCharMngr.getGameChar(0).posMatrix[14]+0.5f,t);
 		
-		gameCharMngr.drawCharacters(gl,state==3?0:t);
+		gameCharMngr.drawCharacters(gl,state==3?0:t/3);
 		if(state!=3){
 			state = gameCharMngr.checkState();
 		}
 		if(gameCharMngr.getGameChar(0).isDied()){
 			reset();
 		}
-        lastTimer = SystemClock.currentThreadTimeMillis();
-        drawGameInfo(gl);
+        
+        //drawGameInfo(gl);
 	}
 	public void goEdit(GL10 gl) {
 		gl.glPushMatrix();
@@ -129,7 +131,7 @@ public class GameManager {
 		
 		
 	}
-	private void drawGameInfo(GL10 gl) {
+	public void drawGameInfo(GL10 gl) {
 		
 		gl.glViewport(0, 0, width, height);
 		gl.glMatrixMode(gl.GL_PROJECTION);	 // Select Projection

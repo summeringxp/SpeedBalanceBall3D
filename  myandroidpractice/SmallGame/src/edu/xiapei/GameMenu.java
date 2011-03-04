@@ -38,7 +38,7 @@ public class GameMenu extends Activity{
 	private Button start,/*edit,*/exit,pre,next,reset,back,save;
 	private GameSurfaceView menuView;
 	private GameRenderer gameRenderer;
-	private TextView mapinfo,hsinfo,timeinfo;
+	private TextView mapinfo,hsinfo,timeinfo,title,cr;
 	private int mapindex = 1;
 	private int mapCount = 1;
 	private long tempRec ;
@@ -61,6 +61,8 @@ public class GameMenu extends Activity{
 		mapinfo = (TextView)findViewById(R.id.mapinfo);
 	    hsinfo = (TextView)findViewById(R.id.hsinfo);
 	    timeinfo = (TextView)findViewById(R.id.timeinfo);
+	    title = (TextView)findViewById(R.id.title);
+	    cr= (TextView)findViewById(R.id.cr);
 	    start = (Button) findViewById(R.id.start);
 	    //edit = (Button) findViewById(R.id.edit);
 	    exit = (Button) findViewById(R.id.exit);
@@ -107,6 +109,8 @@ public class GameMenu extends Activity{
 			    reset.setVisibility(View.INVISIBLE);
 			    back.setVisibility(View.INVISIBLE);
 			    save.setVisibility(View.INVISIBLE);
+			    title.setVisibility(View.VISIBLE);
+			    cr.setVisibility(View.VISIBLE);
 		   }else if(gameStep == 1){
 			  
 			    start.setVisibility(View.INVISIBLE);
@@ -118,6 +122,8 @@ public class GameMenu extends Activity{
 			    reset.setVisibility(View.VISIBLE);
 			    back.setVisibility(View.VISIBLE);
 			    save.setVisibility(View.INVISIBLE);
+			    title.setVisibility(View.INVISIBLE);
+			    cr.setVisibility(View.INVISIBLE);
 		   }/*else if(gameStep == 2){
 			   start.setVisibility(View.INVISIBLE);
 			   // edit.setVisibility(View.INVISIBLE);

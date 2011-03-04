@@ -5,7 +5,7 @@ public class Target extends MapElements {
 
 	public Target(int h) {
 		super(h);
-		this.setDrawer(new CubeDrawer(hight,1));
+		this.setDrawer(new CubeDrawer(hight,0));
 		// TODO Auto-generated constructor stub
 	}
 

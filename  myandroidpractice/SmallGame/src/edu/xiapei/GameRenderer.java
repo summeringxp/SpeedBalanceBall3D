@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import gameCharactor.GameCharactor;
 import gameCharactor.TargetFlag;
 import gameTools.GLTextureFactory;
-import gameTools.GLTextures;
 import gameTools.Graphics2D;
 
 public class GameRenderer implements GLSurfaceView.Renderer {
@@ -71,7 +70,9 @@ public class GameRenderer implements GLSurfaceView.Renderer {
     	   gameManager.goEdit(gl);
        }
        gameManager.getGameMap().drawMapElements(gl,gameManager.getGameStep(),gameManager.getPlayTime());
-       
+       if(gameManager.getGameStep()==1){
+    	   gameManager.drawGameInfo(gl);
+       }
        
        
        

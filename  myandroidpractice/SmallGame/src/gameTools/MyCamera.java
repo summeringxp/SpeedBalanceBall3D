@@ -55,7 +55,8 @@ public class MyCamera {
 		
 		centerX=eyeX;
 		centerY=eyeY;
-		centerZ=-eyeZ;
+		centerZ=eyeZ-8.0f;
+		
 	}
 
 	public void follow(float x,float y,float z,long t){
@@ -65,7 +66,7 @@ public class MyCamera {
 		
 		centerX=eyeX;
 		centerY=eyeY;
-		centerZ=-eyeZ;
+		centerZ=eyeZ-8.0f;
 	}
 	public void setPos(float[] initpos){
 		eyeX = initpos[0];
@@ -73,7 +74,7 @@ public class MyCamera {
 		eyeZ = initpos[2]+2.65f;
 		centerX=eyeX;
 		centerY=eyeY;
-		centerZ=-eyeZ;
+		centerZ=eyeZ-8.0f;
 		speedX = 0.0f;
 		speedY = 0.0f;
 		speedZ = 0.0f;

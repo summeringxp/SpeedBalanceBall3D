@@ -13,7 +13,6 @@ import storageTools.MapDto;
 
 import edu.xiapei.R;
 import edu.xiapei.Statics;
-import gameTools.GLTextures;
 import gameTools.GameTools;
 
 public class GameMap {
