@@ -5,6 +5,7 @@ import javax.microedition.khronos.opengles.GL10;
 import storageTools.MapDto;
 
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -31,10 +32,6 @@ public class GameManager {
 	private int state;
 	private int gameStep=0;
 	private Graphics2D g;
-	private TextView textView;
-	private static int WIN=1;
-	private static int LOSE=2;
-	private static int OVER=3;
 	private int width,height;
 	private long recordTime;
 	private float fx,fy;
@@ -44,6 +41,7 @@ public class GameManager {
 		this.width=width;
 		this.height=height;
 		g.init(width, height);
+		mUi = new MyUI(g, height, width);
 	}
 	public MyCamera getMyCamera() {
 		return myCamera;
@@ -70,7 +68,7 @@ public class GameManager {
 		menuEle[10] = new Mud(0);
 		menuEle[11] = new Target(0);
 		menuEle[12] = new Glass(0);
-		mUi = new MyUI();
+		
 		}
 	public GameMap getGameMap() {
 		return gameMap;
@@ -96,10 +94,11 @@ public class GameManager {
 		
 		long t = SystemClock.currentThreadTimeMillis()-lastTimer;
 		lastTimer = SystemClock.currentThreadTimeMillis();
-		t=t>60?60:t;
+		//Log.v("timer", String.valueOf(t));
+		t=t>60?0:t;
 		//t=t<10?10:t;
 		
-		myCamera.setCamera(gl, state==3?0:t/2);
+		myCamera.setCamera(gl, state==3?0:t/3);
 		
 		//gameAnima.play(gl);
 		//gameMap.drawMapElements(gl);
@@ -114,7 +113,6 @@ public class GameManager {
 		if(gameCharMngr.getGameChar(0).isDied()){
 			reset();
 		}
-        
         //drawGameInfo(gl);
 	}
 	public void goEdit(GL10 gl) {
@@ -146,7 +144,7 @@ public class GameManager {
 		
 		        /* draw stuff */
 		
-		        mUi.draw(g,height,width,getPlayTime(),recordTime,fx,fy);
+		        mUi.draw(gl,height,width,getPlayTime(),recordTime,fx,fy);
 		       		
 
 		gl.glMatrixMode( gl.GL_PROJECTION );	 // Select Projection

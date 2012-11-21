@@ -48,7 +48,7 @@ public class GameRenderer implements GLSurfaceView.Renderer {
        gl.glActiveTexture(GL10.GL_TEXTURE0);
        gl.glLoadIdentity();
        if(gameManager.getGameStep()==1){
-	       gameManager.getMyCamera().changeView(mTransX, mTransY);
+	       gameManager.getMyCamera().changeView(mTransX*2, mTransY*4);
 	       gameManager.setForce(fTransX, fTransY);
 	       float f[]= transForce(fTransX,fTransY,gameManager.getMyCamera().getTheta());
 	       gameManager.getGameCharMngr().externForce(f[0]*0.05f,-f[1]*0.05f,0.0f);

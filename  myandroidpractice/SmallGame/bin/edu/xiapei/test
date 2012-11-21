@@ -1,0 +1,244 @@
+#version: ccfinder 7.3.2
+#format: classwise
+#langspec: JAVA
+#option: -b 30
+#option: -e char
+#option: -k 30
+#option: -r abcdfikmnoprsuv
+#option: -c wfg
+#option: -y 
+#begin{file description}
+0.0	80	290	C:\Users\peixia\workspace\SmallGame\src\storageTools\MapDao.java
+0.1	11	23	C:\Users\peixia\workspace\SmallGame\src\storageTools\MapDto.java
+0.2	12	5	C:\Users\peixia\workspace\SmallGame\src\storageTools\MapSchema.java
+0.3	29	68	C:\Users\peixia\workspace\SmallGame\src\storageTools\StorageTools.java
+0.4	148	433	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameManager.java
+0.5	25	51	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Acceast.java
+0.6	24	51	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Accnorth.java
+0.7	24	51	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Accsouth.java
+0.8	24	51	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Accup.java
+0.9	24	51	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Accwest.java
+0.10	72	175	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\BackGround.java
+0.11	24	54	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Cube.java
+0.12	166	142	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\CubeDrawer.java
+0.13	9	6	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Drawable.java
+0.14	142	347	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\GameMap.java
+0.15	25	52	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Hole.java
+0.16	13	17	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\HoleDrawer.java
+0.17	49	54	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\MapElements.java
+0.18	85	142	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\SlopDrawer.java
+0.19	24	58	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\SlopEast.java
+0.20	34	58	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\SlopNorth.java
+0.21	24	58	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\SlopSouth.java
+0.22	24	58	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\SlopWest.java
+0.23	25	54	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Startpoint.java
+0.24	25	51	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMap\Target.java
+0.25	303	959	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameMenu.java
+0.26	113	350	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameRenderer.java
+0.27	99	209	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\GameSurfaceView.java
+0.28	69	172	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\MapViewRenderer.java
+0.29	164	387	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\SmallGame.java
+0.30	110	75	C:\Users\peixia\workspace\SmallGame\src\edu\xiapei\Statics.java
+#end{file description}
+#begin{syntax error}
+#end{syntax error}
+#begin{clone}
+#begin{set}
+0.0	15,9,32	23,40,71	16
+0.0	29,9,86	37,40,125	16
+#end{set}
+#begin{set}
+0.0	60,4,197	63,78,229	11
+0.0	62,4,213	65,70,245	0
+#end{set}
+#begin{set}
+0.0	60,4,197	64,78,237	11
+0.0	61,4,205	65,70,245	5
+#end{set}
+#begin{set}
+0.4	53,3,89	58,32,119	8
+0.4	60,3,124	65,35,154	0
+#end{set}
+#begin{set}
+0.4	53,3,89	59,32,124	8
+0.4	59,3,119	65,35,154	0
+#end{set}
+#begin{set}
+0.4	53,3,89	60,32,129	8
+0.4	58,3,114	65,35,154	0
+#end{set}
+#begin{set}
+0.4	53,3,89	61,31,134	8
+0.4	57,3,109	65,35,154	0
+#end{set}
+#begin{set}
+0.4	53,3,89	62,31,139	8
+0.4	56,3,104	65,35,154	0
+#end{set}
+#begin{set}
+0.4	53,3,89	63,30,144	8
+0.4	55,3,99	65,35,154	0
+#end{set}
+#begin{set}
+0.4	53,3,89	64,31,149	8
+0.4	54,3,94	65,35,154	3
+#end{set}
+#begin{set}
+0.10	40,6,61	47,31,97	28
+0.10	50,6,102	57,33,138	28
+0.18	62,10,59	69,35,95	28
+#end{set}
+#begin{set}
+0.10	31,24,36	43,49,73	23
+0.12	33,27,34	147,53,71	32
+0.18	31,12,34	65,53,71	25
+#end{set}
+#begin{set}
+0.10	24,6,30	51,31,112	57
+0.18	19,10,28	73,35,110	62
+#end{set}
+#begin{set}
+0.14	68,8,72	70,65,102	19
+0.14	78,8,172	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	71,65,112	19
+0.14	77,8,162	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	72,64,122	19
+0.14	76,8,152	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	73,64,132	19
+0.14	75,8,142	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	74,64,142	19
+0.14	74,8,132	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	75,64,152	19
+0.14	73,8,122	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	76,63,162	19
+0.14	72,8,112	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	77,63,172	19
+0.14	71,8,102	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	78,62,182	19
+0.14	70,8,92	80,67,202	0
+#end{set}
+#begin{set}
+0.14	68,8,72	79,63,192	19
+0.14	69,8,82	80,67,202	9
+#end{set}
+#begin{set}
+0.25	55,3,101	58,46,137	15
+0.25	61,6,155	64,46,191	0
+#end{set}
+#begin{set}
+0.25	55,3,101	59,46,146	15
+0.25	60,6,146	64,46,191	0
+#end{set}
+#begin{set}
+0.25	55,3,101	60,44,155	15
+0.25	59,6,137	64,46,191	0
+#end{set}
+#begin{set}
+0.25	55,3,101	61,46,164	15
+0.25	58,6,128	64,46,191	0
+#end{set}
+#begin{set}
+0.25	55,3,101	62,48,173	15
+0.25	57,6,119	64,46,191	0
+#end{set}
+#begin{set}
+0.25	55,3,101	63,46,182	15
+0.25	56,6,110	64,46,191	6
+#end{set}
+#begin{set}
+0.25	66,6,196	72,30,228	5
+0.25	67,6,201	74,21,233	0
+#end{set}
+#begin{set}
+0.25	91,6,288	99,44,333	14
+0.25	102,12,346	111,43,391	14
+0.25	112,12,394	120,41,439	14
+#end{set}
+#begin{set}
+0.25	92,7,293	97,40,323	9
+0.25	96,8,313	101,43,343	0
+0.25	104,8,351	109,42,381	9
+0.25	106,8,361	111,43,391	0
+0.25	113,7,399	118,44,429	9
+0.25	115,8,409	120,41,439	0
+#end{set}
+#begin{set}
+0.25	92,7,293	98,41,328	9
+0.25	95,8,308	101,43,343	0
+0.25	104,8,351	110,41,386	9
+0.25	105,8,356	111,43,391	4
+0.25	113,7,399	119,41,434	9
+0.25	114,8,404	120,41,439	4
+#end{set}
+#begin{set}
+0.25	92,7,293	99,44,333	9
+0.25	94,8,303	101,43,343	0
+#end{set}
+#begin{set}
+0.25	92,7,293	100,43,338	9
+0.25	93,8,298	101,43,343	4
+#end{set}
+#begin{set}
+0.25	93,8,298	100,43,338	4
+0.25	104,8,351	111,43,391	9
+0.25	113,7,399	120,41,439	9
+#end{set}
+#begin{set}
+0.25	94,8,303	102,7,344	1
+0.25	104,8,351	112,7,392	10
+0.25	113,7,399	121,7,440	10
+#end{set}
+#begin{set}
+0.25	102,7,345	112,7,392	16
+0.25	112,7,393	121,7,440	16
+#end{set}
+#begin{set}
+0.25	159,3,532	170,4,562	30
+0.25	184,4,587	196,6,617	30
+0.25	209,3,639	218,5,669	30
+#end{set}
+#begin{set}
+0.25	229,5,689	235,5,721	29
+0.25	245,6,741	252,6,773	29
+#end{set}
+#begin{set}
+0.25	255,13,777	273,49,854	73
+0.29	117,13,206	135,55,283	73
+#end{set}
+#begin{set}
+0.26	74,9,234	80,5,265	30
+0.28	45,9,98	51,5,129	30
+#end{set}
+#begin{set}
+0.26	85,8,281	91,41,311	22
+0.28	54,8,135	60,41,165	22
+#end{set}
+#begin{set}
+0.30	7,9,6	23,34,36	3
+0.30	10,9,12	29,39,42	0
+#end{set}
+#begin{set}
+0.30	7,9,6	26,49,38	3
+0.30	9,9,10	29,39,42	0
+#end{set}
+#begin{set}
+0.30	7,9,6	27,52,40	3
+0.30	8,9,8	29,39,42	1
+#end{set}
+#end{clone}

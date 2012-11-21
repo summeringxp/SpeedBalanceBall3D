@@ -13,6 +13,11 @@ import android.graphics.Paint;
 //OpenGLによる2Dグラフィックスオブジェクト
 public class Graphics2D {
     //テクスチャ頂点情報
+	
+
+	
+	
+	
     private final static float[] panelVertices=new float[]{
          0,  0, //左上
          0, -1, //左下

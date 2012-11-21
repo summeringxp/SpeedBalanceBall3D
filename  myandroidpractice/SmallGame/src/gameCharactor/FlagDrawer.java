@@ -91,7 +91,7 @@ public class FlagDrawer implements Drawable {
 	@Override
 	public void draw(GL10 gl,long t) {
 		//gl.glFrontFace(GL10.GL_CW);
-		updateVertex(t);
+		//updateVertex(t);
         gl.glVertexPointer(3, GL10.GL_FIXED, 0, mVertexBuffer);
         gl.glColorPointer(4, GL10.GL_FIXED, 0, mColorBuffer);
         gl.glDisable(GL10.GL_CULL_FACE);
@@ -100,7 +100,7 @@ public class FlagDrawer implements Drawable {
         gl.glEnable(GL10.GL_CULL_FACE);
 
 	}
-	private void updateVertex(long t) {
+	/*private void updateVertex(long t) {
 		// TODO Auto-generated method stub
 		int one = Statics.CELLSIZE;
         int vertices[] = {
@@ -129,6 +129,6 @@ public class FlagDrawer implements Drawable {
         mVertexBuffer = vbb.asIntBuffer();
         mVertexBuffer.put(vertices);
         mVertexBuffer.position(0);
-	}
+	}*/
 
 }
